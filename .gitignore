@@ -41,3 +41,5 @@ lerna-debug.log*
 !.yarn/releases
 
 .DS_Store
+
+.pre-commit-config.yaml
