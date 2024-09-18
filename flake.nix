@@ -1,5 +1,5 @@
 {
-  description = "A very basic flake";
+  description = "supaditor nix flake";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -16,29 +16,30 @@
     ,
     }:
     let
-      systems = [
+      supportedSystems = [
         "x86_64-linux"
         "aarch64-linux"
         "x86_64-darwin"
         "aarch64-darwin"
       ];
 
-      forAllSystems =
-        f:
-        nixpkgs.lib.genAttrs systems (
-          system:
-          f rec {
-            inherit system;
-            pkgs = nixpkgs.legacyPackages.${system};
-            commonPackages = builtins.attrValues {
-              inherit (pkgs) nodejs pnpm;
-            };
-          }
-        );
+      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
+      nixpkgsFor = forAllSystems (system: import nixpkgs { inherit system; });
     in
     {
+      formatter = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgsFor.${system};
+        in
+        pkgs.nixfmt-rfc-style
+      );
+
       checks = forAllSystems (
-        { system, pkgs, ... }:
+        system:
+        let
+          pkgs = nixpkgsFor.${system};
+        in
         {
           pre-commit-check = pre-commit-hooks.lib.${system}.run {
             src = builtins.path { path = ./.; };
@@ -69,28 +70,31 @@
         }
       );
 
-      formatter = forAllSystems (
-        { system
-        , pkgs
-        , commonPackages
-        , ...
-        }:
-        pkgs.nixfmt-rfc-style
-      );
-
       devShells = forAllSystems (
-        { system
-        , pkgs
-        , commonPackages
-        , ...
-        }:
+        system:
+        let
+          pkgs = nixpkgsFor.${system};
+        in
         {
           default = pkgs.mkShell {
-            inherit (self.checks.${system}.pre-commit-check) shellHook;
-            packages = commonPackages ++ self.checks.${system}.pre-commit-check.enabledPackages;
+            shellHook = ''
+              ${self.checks.${system}.pre-commit-check.shellHook}
+              figlet "supaudit"
+            '';
+
+            nativeBuildInputs = self.checks.${system}.pre-commit-check.enabledPackages ++ [
+              pkgs.pnpm
+              pkgs.nodejs
+              pkgs.just
+              pkgs.supabase-cli
+              pkgs.figlet
+            ];
+
+            buildInputs = [
+              pkgs.deno
+            ];
           };
         }
       );
-
     };
 }
