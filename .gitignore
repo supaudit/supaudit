@@ -45,8 +45,10 @@ lerna-debug.log*
 .pre-commit-config.yaml
 
 .direnv
+<<<<<<< HEAD
 .env
 .env.*
 
 # Panda CSS
 src/styled-system
+.branches
