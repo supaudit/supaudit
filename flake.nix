@@ -48,23 +48,8 @@
               "push"
             ];
             hooks = {
-              actionlint.enable = true;
               commitizen.enable = true;
               nixpkgs-fmt.enable = true;
-              biome = {
-                enable = true;
-                package = pkgs.biome;
-                name = "biome";
-                entry = "biome check --no-errors-on-unmatched";
-                types_or = [
-                  "javascript"
-                  "jsx"
-                  "ts"
-                  "tsx"
-                  "json"
-                ];
-                stages = [ "pre-push" ];
-              };
             };
           };
         }
