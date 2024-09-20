@@ -22,6 +22,7 @@
     "fmt": "prettier --write .",
     "fmt.check": "prettier --check .",
     "lint": "eslint \"src/**/*.ts*\"",
+    "prebuild.pandacss": "panda codegen --silent",
     "preview": "qwik build preview && vite preview --open",
     "start": "vite --open --mode ssr",
     "qwik": "qwik"
@@ -29,6 +30,11 @@
   "devDependencies": {
     "@builder.io/qwik": "^1.8.0",
     "@builder.io/qwik-city": "^1.8.0",
+    "@builder.io/vite-plugin-macro": "~0.0.7",
+    "@modular-forms/qwik": "^0.27.0",
+    "@pandacss/dev": "^0.36.1",
+    "@shadow-panda/preset": "^0.7.1",
+    "@supabase/supabase-js": "^2.45.4",
     "@types/eslint": "8.56.10",
     "@types/node": "20.14.11",
     "@typescript-eslint/eslint-plugin": "7.16.1",
@@ -36,10 +42,17 @@
     "eslint": "8.57.0",
     "eslint-plugin-qwik": "^1.8.0",
     "prettier": "3.3.3",
+    "supabase-auth-helpers-qwik": "^0.0.3",
     "typescript": "5.4.5",
     "undici": "*",
     "vite": "5.3.5",
     "vite-tsconfig-paths": "^4.2.1"
   },
-  "packageManager": "pnpm@9.10.0"
+  "packageManager": "pnpm@9.10.0",
+  "dependencies": {
+    "@fontsource-variable/public-sans": "^5.1.0",
+    "@fontsource-variable/space-grotesk": "^5.1.0",
+    "@shadow-panda/style-context": "^0.7.1",
+    "valibot": "^0.42.1"
+  }
 }
