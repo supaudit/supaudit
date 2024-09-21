@@ -2,7 +2,10 @@
 
 up:
     supabase start
-    supabase functions serve
+    supabase functions serve --env-file ./.env
+
+down:
+    supabase stop
 
 restart:
     supabase stop
