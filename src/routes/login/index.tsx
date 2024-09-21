@@ -1,9 +1,6 @@
 import {
-  $,
   component$,
   useContext,
-  useSignal,
-  useVisibleTask$,
 } from "@builder.io/qwik";
 import type { DocumentHead } from "@builder.io/qwik-city";
 import { Link, routeLoader$ } from "@builder.io/qwik-city";

@@ -3,7 +3,6 @@ import {
   component$,
   useContextProvider,
   useOnDocument,
-  useOnWindow,
   useSignal,
   useTask$,
 } from "@builder.io/qwik";
@@ -20,7 +19,6 @@ import "@fontsource-variable/space-grotesk";
 
 import "./global.css";
 import { DarkModeContext } from "./context";
-import { is } from "valibot";
 
 export default component$(() => {
   const darkMode = useSignal(false);
@@ -46,7 +44,7 @@ export default component$(() => {
       return;
     }
 
-	window.localStorage.setItem("theme", darkMode.value ? "dark" : "light");
+    window.localStorage.setItem("theme", darkMode.value ? "dark" : "light");
     document.documentElement.classList.toggle("dark", darkMode.value);
   });
 
@@ -62,13 +60,6 @@ export default component$(() => {
         )}
 
         <RouterHead />
-        <script
-          dangerouslySetInnerHTML={`
-			if (localStorage.getItem("theme") === "dark") {
-				document.documentElement.classList.add("dark");
-		    };
-		`}
-        ></script>
       </head>
       <body lang="en">
         <RouterOutlet />

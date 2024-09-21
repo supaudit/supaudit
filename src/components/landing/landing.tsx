@@ -8,7 +8,6 @@ import { Link } from "@builder.io/qwik-city";
 import {
   $,
   component$,
-  Signal,
   useContext,
   useSignal,
   useStyles$,
