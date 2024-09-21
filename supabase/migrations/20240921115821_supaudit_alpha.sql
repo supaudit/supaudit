@@ -1,18 +1,30 @@
+/*
+  File: 20240921115821_supaudit_alpha.sql
+
+  Description:
+  This SQL script creates a table named 'reports' and defines a trigger function named 'update_updated_at_column'.
+  The 'reports' table has the following columns:
+  - id: UUID column serving as the primary key with a default value generated using the gen_random_uuid() function.
+  - user_id: UUID column referencing the 'id' column of the 'auth.users' table with a cascade delete constraint.
+  - title: Text column storing the title of the report.
+  - content: JSONB column storing the content of the report.
+  - state: JSONB column storing the state of the report.
+  - created_at: Timestamp with time zone column storing the creation timestamp of the report with a default value of the current timestamp.
+  - updated_at: Timestamp with time zone column storing the last updated timestamp of the report with a default value of the current timestamp.
+
+  The 'update_updated_at_column' function is a trigger function that updates the 'updated_at' column of the 'reports' table with the current timestamp whenever an update operation is performed on the table.
+
+  Triggers:
+  - update_reports_updated_at: Trigger defined on the 'reports' table that executes the 'update_updated_at_column' function before each update operation.
+
+*/
 -- Migrations will appear here as you chat with AI
 
-create table users (
-  id bigint primary key generated always as identity,
-  username text not null unique,
-  email text not null unique,
-  password_hash text not null,
-  created_at timestamp with time zone default now()
-);
-
 create table reports (
-  id bigint primary key generated always as identity,
-  user_id bigint not null references users (id) on delete cascade,
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users (id) on delete cascade,
   title text not null,
-  content text not null,
+  content jsonb not null,
   state jsonb not null,
   created_at timestamp with time zone default now(),
   updated_at timestamp with time zone default now()
@@ -29,6 +41,3 @@ $$ language plpgsql;
 create trigger update_reports_updated_at before
 update on reports for each row
 execute function update_updated_at_column ();
-
-alter table reports
-alter column content type jsonb using content::jsonb;
