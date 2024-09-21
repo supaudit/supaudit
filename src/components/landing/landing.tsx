@@ -139,7 +139,7 @@ export default component$(() => {
               <div class="space-x-4">
                 <Link href="/login">
                   <Button
-                    className="bg-primary text-white hover:bg-primary/90 dark:bg-primary dark:text-gray-900 dark:hover:bg-primary/90"
+                    class="bg-primary text-white hover:bg-primary/90 dark:bg-primary dark:text-gray-900 dark:hover:bg-primary/90"
                     size="lg"
                   >
                     Log in to Supaudit

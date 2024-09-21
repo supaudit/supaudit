@@ -6,10 +6,12 @@ import { cn } from "~/lib/utils";
 import { qwikify$ } from "@builder.io/qwik-react";
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "className"> {
+  class?: string;
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }) => {
+  ({ class: className, type, ...props }) => {
     return (
       <input
         type={type}

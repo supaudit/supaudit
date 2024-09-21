@@ -88,7 +88,11 @@ export default component$(() => {
             onClick$={() => (darkMode.value = !darkMode.value)}
             class="rounded-full bg-gray-200 p-2 dark:bg-gray-700"
           >
-            {darkMode.value ? <Sun class="h-4 w-4" /> : <Moon class="h-4 w-4" />}
+            {darkMode.value ? (
+              <Sun class="h-4 w-4" />
+            ) : (
+              <Moon class="h-4 w-4" />
+            )}
           </button>
         </div>
       </header>
@@ -104,10 +108,7 @@ export default component$(() => {
           </div>
           <form class="space-y-6">
             <div class="space-y-2">
-              <Label
-                htmlFor="email"
-                className="text-gray-700 dark:text-gray-300"
-              >
+              <Label htmlFor="email" class="text-gray-700 dark:text-gray-300">
                 Email
               </Label>
               <Input
@@ -115,13 +116,13 @@ export default component$(() => {
                 type="email"
                 placeholder="you@example.com"
                 required
-                className="w-full bg-white text-gray-900 dark:bg-gray-800 dark:text-white"
+                class="w-full bg-white text-gray-900 dark:bg-gray-800 dark:text-white"
               />
             </div>
             <div class="space-y-2">
               <Label
                 htmlFor="password"
-                className="text-gray-700 dark:text-gray-300"
+                class="text-gray-700 dark:text-gray-300"
               >
                 Password
               </Label>
@@ -130,7 +131,7 @@ export default component$(() => {
                 type="password"
                 placeholder="••••••••"
                 required
-                className="w-full bg-white text-gray-900 dark:bg-gray-800 dark:text-white"
+                class="w-full bg-white text-gray-900 dark:bg-gray-800 dark:text-white"
               />
             </div>
             <div class="flex items-center justify-between">
@@ -143,7 +144,7 @@ export default component$(() => {
                 />
                 <Label
                   htmlFor="remember-me"
-                  className="ml-2 block text-sm text-gray-700 dark:text-gray-300"
+                  class="ml-2 block text-sm text-gray-700 dark:text-gray-300"
                 >
                   Remember me
                 </Label>
@@ -156,7 +157,7 @@ export default component$(() => {
             </div>
             <Button
               type="submit"
-              className="w-full bg-primary text-white hover:bg-primary/90 dark:bg-primary dark:text-gray-900 dark:hover:bg-primary/90"
+              class="w-full bg-primary text-white hover:bg-primary/90 dark:bg-primary dark:text-gray-900 dark:hover:bg-primary/90"
             >
               Log in
             </Button>
