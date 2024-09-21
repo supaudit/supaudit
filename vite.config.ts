@@ -7,12 +7,12 @@ import { qwikVite } from "@builder.io/qwik/optimizer";
 import { qwikCity } from "@builder.io/qwik-city/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import pkg from "./package.json";
-import { macroPlugin } from "@builder.io/vite-plugin-macro";
+import { qwikReact } from "@builder.io/qwik-react/vite";
 type PkgDep = Record<string, string>;
 const { dependencies = {}, devDependencies = {} } = pkg as any as {
-	dependencies: PkgDep;
-	devDependencies: PkgDep;
-	[key: string]: unknown;
+  dependencies: PkgDep;
+  devDependencies: PkgDep;
+  [key: string]: unknown;
 };
 errorOnDuplicatesPkgDeps(devDependencies, dependencies);
 /**
@@ -22,10 +22,10 @@ errorOnDuplicatesPkgDeps(devDependencies, dependencies);
 export default defineConfig(({ command, mode }): UserConfig => {
   return {
     plugins: [
-      macroPlugin({ preset: "pandacss" }),
       qwikCity(),
       qwikVite(),
       tsconfigPaths(),
+      qwikReact(),
     ],
     // This tells Vite which dependencies to pre-build in dev mode.
     optimizeDeps: {
@@ -70,8 +70,8 @@ export default defineConfig(({ command, mode }): UserConfig => {
  * @param {Object} dependencies - List of production dependencies
  */
 function errorOnDuplicatesPkgDeps(
-	devDependencies: PkgDep,
-	dependencies: PkgDep,
+  devDependencies: PkgDep,
+  dependencies: PkgDep,
 ) {
   let msg = "";
   // Create an array 'duplicateDeps' by filtering devDependencies.
