@@ -45,6 +45,11 @@ export interface AuditReportState {
     domains: Record<Domain["name"], Domain>;
 }
 
+export interface FunctionRequest {
+    state: AuditReportState;
+    prompt: string;
+}
+
 export type LlmHttpPathEnumResponse = string[];
 
 export type LlmDnsDomainEnumResponse = string[];
