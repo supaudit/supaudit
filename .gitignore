@@ -45,7 +45,6 @@ lerna-debug.log*
 .pre-commit-config.yaml
 
 .direnv
-<<<<<<< HEAD
 .env
 .env.*
 
