@@ -73,6 +73,7 @@
               pkgs.just
               pkgs.supabase-cli
               pkgs.figlet
+              pkgs.wait4x
             ];
 
             buildInputs = [

@@ -44,6 +44,14 @@
       "dependencies": [
         "npm:@builder.io/qwik-city@^1.8.0",
         "npm:@builder.io/qwik@^1.8.0",
+        "npm:@builder.io/vite-plugin-macro@~0.0.7",
+        "npm:@fontsource-variable/public-sans@^5.1.0",
+        "npm:@fontsource-variable/space-grotesk@^5.1.0",
+        "npm:@modular-forms/qwik@^0.27.0",
+        "npm:@pandacss/dev@^0.36.1",
+        "npm:@shadow-panda/preset@^0.7.1",
+        "npm:@shadow-panda/style-context@^0.7.1",
+        "npm:@supabase/supabase-js@^2.45.4",
         "npm:@types/eslint@8.56.10",
         "npm:@types/node@20.14.11",
         "npm:@typescript-eslint/eslint-plugin@7.16.1",
@@ -51,8 +59,10 @@
         "npm:eslint-plugin-qwik@^1.8.0",
         "npm:eslint@8.57.0",
         "npm:prettier@3.3.3",
+        "npm:supabase-auth-helpers-qwik@^0.0.3",
         "npm:typescript@5.4.5",
         "npm:undici",
+        "npm:valibot@^0.42.1",
         "npm:vite-tsconfig-paths@^4.2.1",
         "npm:vite@5.3.5"
       ]

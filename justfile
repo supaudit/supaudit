@@ -16,5 +16,5 @@ test:
 
 ci:
     (just up &)
-    sleep 5 # TODO: Wait for HTTP endpoint
+    wait4x http http://127.0.0.1:54321/ --expect-status-code 404 --timeout 2m
     just test
