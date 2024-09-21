@@ -8,24 +8,17 @@ import { Link } from "@builder.io/qwik-city";
 import {
   $,
   component$,
+  Signal,
+  useContext,
   useSignal,
   useStyles$,
-  useVisibleTask$,
 } from "@builder.io/qwik";
+import { DarkModeContext } from "~/context";
 
 export default component$(() => {
-  const darkMode = useSignal(false);
+  const darkMode = useContext(DarkModeContext);
   const mousePosition = useSignal({ x: 0, y: 0 });
   const heroRef = useSignal<Element>();
-
-  useVisibleTask$(async ({ track }) => {
-    track(() => darkMode.value);
-    document.documentElement.classList.toggle('dark', darkMode.value);
-  });
-
-  const toggleDarkMode = $(() => {
-    darkMode.value = !darkMode.value;
-  });
 
   const handleMouseMove = $((event: MouseEvent) => {
     if (heroRef.value) {
@@ -75,7 +68,7 @@ export default component$(() => {
             Documentation
           </Link>
           <button
-            onClick$={toggleDarkMode}
+            onClick$={() => (darkMode.value = !darkMode.value)}
             class="rounded-full bg-gray-200 p-2 dark:bg-gray-700"
           >
             {darkMode.value ? <Sun class="h-4 w-4" /> : <Moon class="h-4 w-4" />}
@@ -136,7 +129,7 @@ export default component$(() => {
           <div class="container relative z-10 px-4 md:px-6">
             <div class="flex flex-col items-center space-y-4 text-center">
               <div class="space-y-2">
-                <h1 class="text-3xl font-bold tracking-tighter text-gray-900 dark:text-white sm:text-4xl md:text-5xl lg:text-6xl/none">
+                <h1 class="text-3xl font-display font-bold tracking-tighter text-gray-900 dark:text-white sm:text-4xl md:text-5xl lg:text-6xl/none">
                   Revolutionize Your Security Audits with Supaudit
                 </h1>
                 <p class="mx-auto max-w-[700px] text-gray-700 dark:text-gray-300 md:text-xl">

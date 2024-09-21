@@ -1,38 +1,79 @@
-import { component$ } from "@builder.io/qwik";
 import {
-	QwikCityProvider,
-	RouterOutlet,
-	ServiceWorkerRegister,
+  $,
+  component$,
+  useContextProvider,
+  useOnDocument,
+  useOnWindow,
+  useSignal,
+  useTask$,
+} from "@builder.io/qwik";
+import {
+  QwikCityProvider,
+  RouterOutlet,
+  ServiceWorkerRegister,
 } from "@builder.io/qwik-city";
 import { RouterHead } from "./components/router-head/router-head";
-import { isDev } from "@builder.io/qwik/build";
+import { isDev, isServer } from "@builder.io/qwik/build";
+
+import "@fontsource-variable/public-sans";
+import "@fontsource-variable/space-grotesk";
 
 import "./global.css";
+import { DarkModeContext } from "./context";
+import { is } from "valibot";
 
 export default component$(() => {
-	/**
-	 * The root of a QwikCity site always start with the <QwikCityProvider> component,
-	 * immediately followed by the document's <head> and <body>.
-	 *
-	 * Don't remove the `<head>` and `<body>` elements.
-	 */
+  const darkMode = useSignal(false);
+  useContextProvider(DarkModeContext, darkMode);
 
-	return (
-		<QwikCityProvider>
-			<head>
-				<meta charset="utf-8" />
-				{!isDev && (
-					<link
-						rel="manifest"
-						href={`${import.meta.env.BASE_URL}manifest.json`}
-					/>
-				)}
-				<RouterHead />
-			</head>
-			<body lang="en">
-				<RouterOutlet />
-				{!isDev && <ServiceWorkerRegister />}
-			</body>
-		</QwikCityProvider>
-	);
+  useOnDocument(
+    "DOMContentLoaded",
+    $(() => {
+      const isDarkScheme = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
+      const localTheme = window.localStorage.getItem("theme");
+
+      darkMode.value =
+        localTheme === "dark" || (localTheme === null && isDarkScheme);
+    }),
+  );
+
+  useTask$(({ track }) => {
+    track(() => darkMode.value);
+
+    if (isServer) {
+      return;
+    }
+
+	window.localStorage.setItem("theme", darkMode.value ? "dark" : "light");
+    document.documentElement.classList.toggle("dark", darkMode.value);
+  });
+
+  return (
+    <QwikCityProvider>
+      <head>
+        <meta charset="utf-8" />
+        {!isDev && (
+          <link
+            rel="manifest"
+            href={`${import.meta.env.BASE_URL}manifest.json`}
+          />
+        )}
+
+        <RouterHead />
+        <script
+          dangerouslySetInnerHTML={`
+			if (localStorage.getItem("theme") === "dark") {
+				document.documentElement.classList.add("dark");
+		    };
+		`}
+        ></script>
+      </head>
+      <body lang="en">
+        <RouterOutlet />
+        {!isDev && <ServiceWorkerRegister />}
+      </body>
+    </QwikCityProvider>
+  );
 });

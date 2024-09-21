@@ -35,7 +35,8 @@
 
     --radius: 0.5rem;
 
-    --font-sans: "Inter Variable"
+    --font-display: "Space Grotesk Variable";
+    --font-sans: "Public Sans Variable";
   }
 
   .dark {
