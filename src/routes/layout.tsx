@@ -27,8 +27,8 @@ export default component$(() => {
     <div class={`flex min-h-screen flex-col`}>
       <header class="fixed left-0 right-0 top-0 z-50 flex h-14 items-center bg-white/80 px-4 backdrop-blur-sm dark:bg-gray-900/80 lg:px-6">
         <Link class="flex items-center justify-center" href="#">
-          <div class="">
-            <Shield />
+          <div>
+            <Shield class="h-6 w-6 text-primary"/>
           </div>
           <span class="ml-2 text-2xl font-bold text-gray-900 dark:text-white">
             Supaudit
