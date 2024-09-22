@@ -152,10 +152,3 @@ export default component$(() => {
     </div>
   );
 });
-function useOnWindow$(arg0: () => void) {
-  throw new Error("Function not implemented.");
-}
-
-function useOn$(arg0: ({ track }: { track: any }) => Promise<void>) {
-  throw new Error("Function not implemented.");
-}

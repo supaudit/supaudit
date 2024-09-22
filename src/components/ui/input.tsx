@@ -11,7 +11,7 @@ export interface InputProps
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ class: className, type, ...props }) => {
+  ({ class: className, type }) => {
     return (
       <input
         type={type}

@@ -7,7 +7,7 @@ import { Link, routeLoader$ } from "@builder.io/qwik-city";
 import { createServerClient } from "supabase-auth-helpers-qwik";
 
 import type { InitialValues } from "@modular-forms/qwik";
-import { formAction$, useForm, valiForm$ } from "@modular-forms/qwik";
+import { formAction$, /* useForm, */ valiForm$ } from "@modular-forms/qwik";
 import * as v from "valibot";
 
 import {
@@ -65,11 +65,11 @@ export const useFormAction = formAction$<LoginForm>(
 
 export default component$(() => {
   const darkMode = useContext(DarkModeContext);
-  const [, { Form, Field }] = useForm<LoginForm>({
-    loader: useFormLoader(),
-    action: useFormAction(),
-    validate: valiForm$(LoginSchema),
-  });
+  // const [, { Form, Field }] = useForm<LoginForm>({
+  //   loader: useFormLoader(),
+  //   action: useFormAction(),
+  //   validate: valiForm$(LoginSchema),
+  // });
 
   return (
     <div class={"flex min-h-screen flex-col"}>
