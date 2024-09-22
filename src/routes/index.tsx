@@ -3,9 +3,12 @@ import { Button } from "~/components/ui";
 import { Link } from "@builder.io/qwik-city";
 import { $, component$, useSignal, useStyles$ } from "@builder.io/qwik";
 
+import { useAuthenticatedUser } from "~/lib/loaders";
+
 export default component$(() => {
   const mousePosition = useSignal({ x: 0, y: 0 });
   const heroRef = useSignal<Element>();
+  const user = useAuthenticatedUser();
 
   const handleMouseMove = $((event: MouseEvent) => {
     if (heroRef.value) {
@@ -99,12 +102,12 @@ export default component$(() => {
               </p>
             </div>
             <div class="space-x-4">
-              <Link href="/login">
+              <Link href={user ? "/studio" : "/login"}>
                 <Button
                   class="bg-primary text-white hover:bg-primary/90 dark:bg-primary dark:text-gray-900 dark:hover:bg-primary/90"
                   size="lg"
                 >
-                  Log in to Supaudit
+                  {user ? "Go to Supaudit Studio" : "Log in to Supaudit"}
                 </Button>
               </Link>
             </div>

@@ -1,18 +1,21 @@
 import { component$ } from "@builder.io/qwik";
-import type { DocumentHead } from "@builder.io/qwik-city";
+import type { DocumentHead, RequestHandler } from "@builder.io/qwik-city";
 import { routeLoader$ } from "@builder.io/qwik-city";
 import { createServerClient } from "supabase-auth-helpers-qwik";
 
 import type { InitialValues } from "@modular-forms/qwik";
-import {
-  formAction$,
-  useForm,
-  /* useForm, */ valiForm$,
-} from "@modular-forms/qwik";
+import { formAction$, useForm, valiForm$ } from "@modular-forms/qwik";
 import * as v from "valibot";
 
 import { Button, Input } from "~/components/ui";
 import { QLabel as Label } from "~/components/ui/label";
+
+export const onRequest: RequestHandler = async ({ sharedMap, redirect }) => {
+  const user = sharedMap.get("user");
+  if (user) {
+    throw redirect(302, "/studio");
+  }
+};
 
 // Input validation logic
 const LoginSchema = v.object({
@@ -41,7 +44,7 @@ export const useFormAction = formAction$<LoginForm>(
     const supabaseClient = createServerClient(
       requestEv.env.get("PUBLIC_SUPABASE_URL")!,
       requestEv.env.get("PUBLIC_SUPABASE_ANON_KEY")!,
-      requestEv
+      requestEv,
     );
 
     const { error } = await supabaseClient.auth.signInWithPassword({
@@ -64,8 +67,8 @@ export default component$(() => {
   });
 
   return (
-    <main class="flex flex-1 w-screen items-center justify-center p-4">
-      <div class="flex flex-wrap items-center justify-center w-full gap-20">
+    <main class="flex w-screen flex-1 items-center justify-center p-4">
+      <div class="flex w-full flex-wrap items-center justify-center gap-20">
         <div class="text-center">
           <h1 class="text-3xl font-bold tracking-tighter text-gray-900 dark:text-white sm:text-4xl md:text-5xl">
             Log in to Supaudit
@@ -74,7 +77,7 @@ export default component$(() => {
             Enter your credentials to access your account
           </p>
         </div>
-        <Form class="flex flex-col w-2/3 max-w-sm space-y-3">
+        <Form class="flex w-2/3 max-w-sm flex-col space-y-3">
           <Field name="email">
             {(field, props) => (
               <div class="space-y-1">
