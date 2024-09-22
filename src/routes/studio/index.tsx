@@ -1,6 +1,6 @@
 import { component$ } from "@builder.io/qwik";
 
-export const Dashboard = component$(() => {
+export default component$(() => {
   return (
     <>
       <header>
