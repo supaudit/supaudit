@@ -11,8 +11,7 @@ import {
 } from "@modular-forms/qwik";
 import * as v from "valibot";
 
-import { QButton as Button } from "~/components/ui/button";
-import { Input } from "~/components/ui/input";
+import { Button, Input } from "~/components/ui";
 import { QLabel as Label } from "~/components/ui/label";
 
 // Input validation logic

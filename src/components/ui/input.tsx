@@ -1,7 +1,7 @@
-import { component$, QwikIntrinsicElements } from "@builder.io/qwik";
+import { component$, PropsOf } from "@builder.io/qwik";
 import { cn } from "~/lib/utils";
 
-export const Input = component$<QwikIntrinsicElements["input"]>((props) => {
+export const Input = component$<PropsOf<"input">>((props) => {
   return (
     <input
       {...props}

@@ -1,5 +1,5 @@
 import { DocumentHead } from "@builder.io/qwik-city";
-import { QButton as Button } from "~/components/ui/button";
+import { Button } from "~/components/ui";
 import { Link } from "@builder.io/qwik-city";
 import { $, component$, useSignal, useStyles$ } from "@builder.io/qwik";
 
