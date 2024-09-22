@@ -146,7 +146,7 @@ export default component$(() => {
           <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
             Your Reports
           </h1>
-          <Button class="bg-primary text-white hover:bg-primary/90 dark:bg-primary dark:text-gray-900 dark:hover:bg-primary/90">
+          <Button class="bg-green-400 text-gray-900 hover:bg-green-200 dark:bg-green-600 dark:text-gray-100 dark:hover:bg-green-400">
             <Plus class="mr-2 h-4 w-4" /> New Report
           </Button>
         </div>

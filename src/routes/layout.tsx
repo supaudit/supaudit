@@ -8,6 +8,15 @@ import {
   LuMoon as Moon,
   LuSun as Sun,
 } from "@qwikest/icons/lucide";
+import { createServerClient } from "supabase-auth-helpers-qwik";
+
+export const onRequest: RequestHandler = async (requestEv) => {
+  const supabaseClient = createServerClient(
+    requestEv.env.get("PUBLIC_SUPABASE_URL")!,
+    requestEv.env.get("PUBLIC_SUPABASE_ANON_KEY")!,
+    requestEv
+  );
+}
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   // Control caching for this request for best performance and to reduce hosting costs:
@@ -37,7 +46,7 @@ export default component$(() => {
         <nav class="ml-auto flex gap-4 sm:gap-6">
           <Link
             class="flex items-center text-sm font-medium text-gray-900 underline-offset-4 hover:underline dark:text-white"
-            href="#features"
+            href="/docs"
           >
             Documentation
           </Link>

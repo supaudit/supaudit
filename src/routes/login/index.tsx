@@ -64,8 +64,8 @@ export default component$(() => {
   });
 
   return (
-    <main class="flex flex-1 items-center justify-center p-4">
-      <div class="w-full max-w-md space-y-8">
+    <main class="flex flex-1 w-screen items-center justify-center p-4">
+      <div class="flex flex-wrap items-center justify-center w-full gap-20">
         <div class="text-center">
           <h1 class="text-3xl font-bold tracking-tighter text-gray-900 dark:text-white sm:text-4xl md:text-5xl">
             Log in to Supaudit
@@ -74,7 +74,7 @@ export default component$(() => {
             Enter your credentials to access your account
           </p>
         </div>
-        <Form class="flex flex-col space-y-4">
+        <Form class="flex flex-col w-2/3 max-w-sm space-y-3">
           <Field name="email">
             {(field, props) => (
               <div class="space-y-1">
@@ -95,7 +95,7 @@ export default component$(() => {
           </Field>
           <Field name="password">
             {(field, props) => (
-              <div class="space-y-2">
+              <div class="space-y-1">
                 <Label
                   htmlFor="password"
                   class="text-gray-700 dark:text-gray-300"
