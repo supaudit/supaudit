@@ -6,8 +6,24 @@ import { z } from "https://deno.land/x/zod/mod.ts";
 
 import { FunctionRequest, LlmHttpPathEnumResponse } from '../types.ts'
 
+const fetchWithTimeout = async (url: string, options: RequestInit = {}, timeout: number): Promise<Response> => {
+	const controller = new AbortController()
+	const { signal } = controller
+
+	const timeoutPromise = new Promise<never>((_, reject) => {
+		setTimeout(() => {
+			controller.abort()
+			reject(new Error(`Request timed out after ${timeout} ms`))
+		}, timeout)
+	})
+
+	const fetchPromise = fetch(url, { ...options, signal })
+
+	return Promise.race([fetchPromise, timeoutPromise])
+}
+
 const makeHttpRequest = async (url: string): Promise<Result> => {
-	const response = await fetch(url);
+	const response = await fetchWithTimeout(url, {}, 1000);
 	const bodyText = await response.text();
 	const bodySize = bodyText.length;
 
@@ -30,7 +46,7 @@ const processUrls = async (urlList: LlmHttpPathEnumResponse): Promise<Result[]> 
 		}
 	}
 
-	// TODO: Refresh state
+	// TODO: Send partial with `results` data
 
 	return results;
 };
