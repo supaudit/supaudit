@@ -1,65 +1,81 @@
-# Qwik City App ⚡️
+# Supaudit
 
-- [Qwik Docs](https://qwik.dev/)
-- [Discord](https://qwik.dev/chat)
-- [Qwik GitHub](https://github.com/QwikDev/qwik)
-- [@QwikDev](https://twitter.com/QwikDev)
-- [Vite](https://vitejs.dev/)
+<p align="center">
+    <img width="240px" alt="Supaudit Logo" src="https://github.com/user-attachments/assets/c6929999-c73d-4c5c-8b36-e89317f828e2" />
+</p>
 
----
+Supaudit is an open-source platform that revolutionizes the way security teams perform audits and write reports. By combining the power of interactive notebooks and generative AI, Supaudit streamlines the entire security auditing process.
+
+Features
+
+- 📝 Interactive, _Jupyter-style meets Notion_ type of report editing for dynamic report creation.
+- 🤖 AI-powered insights using Retrieval Augmented Generation (RAG).
+- 🔗 Seamless blending of documentation and live analysis.
+- 👥 Secure access management with user authentication and report ownership.
+- 📊 Centralized state management for comprehensive audit information.
+- 📤 Easy export of reports to Markdown format.
+
+## Getting Started
+
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
+
+> [!IMPORTANT]
+> Default user credentials are:
+> * **Email:** `user@supaudit.local`.
+> * **Password:** `password`.
+
+### Prerequisites
+
+#### Using the Nix flake
+- Nix (with flakes feature).
+
+#### Using system installed packages
+
+- Node.js LTS.
+- pnpm (corepack).
+- Deno.
+- Supabase CLI.
+
+### Installation
+
+1. Create a .env file, using the [.env-template](/.env-template) file as reference.
+
+2. Run the following instructions:
+
+```bash
+# Run Supabase
+supabase start
+
+# Serve the Edge functions
+supabase functions serve
+
+# -- On a different terminal --
+
+# Run the Qwik City app
+pnpm preview
+
+# Access the app in http://localhost:4173
+```
+
+
 
 ## Project Structure
 
-This project is using Qwik with [QwikCity](https://qwik.dev/qwikcity/overview/). QwikCity is just an extra set of tools on top of Qwik to make it easier to build a full site, including directory-based routing, layouts, and more.
-
-Inside your project, you'll see the following directory structure:
-
 ```
-├── public/
-│   └── ...
-└── src/
-    ├── components/
-    │   └── ...
-    └── routes/
-        └── ...
+supaudit/
+├── src/                    // Qwik City app
+└── supabase/               // Supabase project
 ```
 
-- `src/routes`: Provides the directory-based routing, which can include a hierarchy of `layout.tsx` layout files, and an `index.tsx` file as the page. Additionally, `index.ts` files are endpoints. Please see the [routing docs](https://qwik.dev/qwikcity/routing/overview/) for more info.
+## Contributing
 
-- `src/components`: Recommended directory for components.
+We welcome contributions! Feel free to open an issue or pull request.
 
-- `public`: Any static assets, like images, can be placed in the public directory. Please see the [Vite public directory](https://vitejs.dev/guide/assets.html#the-public-directory) for more info.
+## License
 
-## Add Integrations and deployment
+Supaudit is licensed under the [Apache License 2.0](https://spdx.org/licenses/Apache-2.0.html) - see the [LICENSE](LICENSE) file for details.
 
-Use the `pnpm qwik add` command to add additional integrations. Some examples of integrations includes: Cloudflare, Netlify or Express Server, and the [Static Site Generator (SSG)](https://qwik.dev/qwikcity/guides/static-site-generation/).
+## Authors
 
-```shell
-pnpm qwik add # or `pnpm qwik add`
-```
-
-## Development
-
-Development mode uses [Vite's development server](https://vitejs.dev/). The `dev` command will server-side render (SSR) the output during development.
-
-```shell
-npm start # or `pnpm start`
-```
-
-> Note: during dev mode, Vite may request a significant number of `.js` files. This does not represent a Qwik production build.
-
-## Preview
-
-The preview command will create a production build of the client modules, a production build of `src/entry.preview.tsx`, and run a local server. The preview server is only for convenience to preview a production build locally and should not be used as a production server.
-
-```shell
-pnpm preview # or `pnpm preview`
-```
-
-## Production
-
-The production build will generate client and server modules by running both client and server build commands. The build command will use Typescript to run a type check on the source code.
-
-```shell
-pnpm build # or `pnpm build`
-```
+- Óscar Carrasco / [oxcabe](https://github.com/oxcabe)
+- Eduardo González / [codexlynx](https://github.com/codexlynx).
