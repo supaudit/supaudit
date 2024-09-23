@@ -1,12 +1,6 @@
 import { Button, Input, Card } from "~/components/ui";
 import { Checkbox } from "~/components/ui/checkbox";
-import {
-  $,
-  component$,
-  useComputed$,
-  useSignal,
-  useTask$,
-} from "@builder.io/qwik";
+import { $, component$, useComputed$, useSignal } from "@builder.io/qwik";
 
 import { Popover } from "@qwik-ui/headless";
 
@@ -15,13 +9,19 @@ import {
   LuSearch as Search,
   LuChevronUp as ChevronUp,
   LuChevronDown as ChevronDown,
-  LuTrash2 as Trash2,
   LuBarChart as BarChart,
   LuClock as Clock,
   LuFilter as Filter,
   LuX as X,
 } from "@qwikest/icons/lucide";
-import { DocumentHead } from "@builder.io/qwik-city";
+import {
+  DocumentHead,
+  routeAction$,
+  routeLoader$,
+  useNavigate,
+} from "@builder.io/qwik-city";
+import { SupabaseClient, User } from "supabase-auth-helpers-qwik";
+import { Database } from "~/database.types";
 
 type Report = {
   id: string;
@@ -39,53 +39,60 @@ const phases = [
   "completed",
 ] as const;
 
+export const useReports = routeLoader$(async ({ sharedMap }) => {
+  const supabase = sharedMap.get("supabase") as SupabaseClient<Database>;
+
+  const { data, error } = await supabase
+    .from("reports")
+    .select("id, title, phase, updated_at, created_at");
+
+  if (error) {
+    console.error("Error fetching reports", error);
+    return [];
+  }
+
+  const reports = data.map(
+    (report) =>
+      ({
+        id: report.id,
+        name: report.title,
+        phase: report.phase,
+        lastModified: new Date(report.updated_at ?? "").toLocaleDateString(),
+        created: new Date(report.created_at ?? "").toLocaleDateString(),
+      }) as Report,
+  );
+
+  return reports;
+});
+
+export const useCreateReport = routeAction$(
+  async (_, { sharedMap, redirect }) => {
+    const supabase = sharedMap.get("supabase") as SupabaseClient<Database>;
+    const user = sharedMap.get("user") as User;
+
+    const { data, error } = await supabase
+      .from("reports")
+      .insert({ user_id: user.id })
+      .select("id");
+
+    if (error) {
+      console.error("Error creating report", error);
+      return;
+    }
+
+    throw redirect(302, `/studio/report/${data[0].id}`);
+  },
+);
+
 export default component$(() => {
-  const reports = useSignal<Report[]>([]);
+  const reports = useReports();
   const searchTerm = useSignal("");
   const phaseFilters = useSignal<Set<string>>(new Set());
   const sortColumn = useSignal<keyof Report>("lastModified");
   const sortDirection = useSignal<"asc" | "desc">("desc");
-  const selectedReports = useSignal<string[]>([]);
 
-  useTask$(() => {
-    reports.value = [
-      {
-        id: "1",
-        name: "Web Application Security Audit",
-        phase: "discovery",
-        lastModified: "2023-06-15",
-        created: "2023-06-10",
-      },
-      {
-        id: "2",
-        name: "Network Infrastructure Review",
-        phase: "structuring",
-        lastModified: "2023-06-14",
-        created: "2023-06-05",
-      },
-      {
-        id: "3",
-        name: "Cloud Security Assessment",
-        phase: "formatting",
-        lastModified: "2023-06-13",
-        created: "2023-06-01",
-      },
-      {
-        id: "4",
-        name: "Mobile App Penetration Test",
-        phase: "disclosed",
-        lastModified: "2023-06-12",
-        created: "2023-05-20",
-      },
-      {
-        id: "5",
-        name: "IoT Device Security Evaluation",
-        phase: "completed",
-        lastModified: "2023-06-11",
-        created: "2023-05-15",
-      },
-    ];
-  });
+  const createReport = useCreateReport();
+  const nav = useNavigate();
 
   const filteredReports = useComputed$(() => {
     return reports.value.filter(
@@ -114,19 +121,6 @@ export default component$(() => {
     }
   });
 
-  const handleSelectReport = $((id: string) => {
-    selectedReports.value = selectedReports.value.includes(id)
-      ? selectedReports.value.filter((reportId) => reportId !== id)
-      : [...selectedReports.value, id];
-  });
-
-  const handleDeleteSelected = $(() => {
-    reports.value = reports.value.filter(
-      (report) => !selectedReports.value.includes(report.id),
-    );
-    selectedReports.value = [];
-  });
-
   const togglePhaseFilter = $((phase: string) => {
     if (phaseFilters.value.has(phase)) {
       phaseFilters.value.delete(phase);
@@ -146,7 +140,10 @@ export default component$(() => {
           <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
             Your Reports
           </h1>
-          <Button class="bg-green-400 text-gray-900 hover:bg-green-200 dark:bg-green-600 dark:text-gray-100 dark:hover:bg-green-400">
+          <Button
+            onClick$={async () => await createReport.submit()}
+            class="bg-green-400 text-gray-900 hover:bg-green-200 dark:bg-green-600 dark:text-gray-100 dark:hover:bg-green-400"
+          >
             <Plus class="mr-2 h-4 w-4" /> New Report
           </Button>
         </div>
@@ -178,24 +175,6 @@ export default component$(() => {
           <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
             <thead class="bg-gray-50 dark:bg-gray-900">
               <tr>
-                <th
-                  scope="col"
-                  class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
-                >
-                  <Checkbox
-                    checked={
-                      selectedReports.value.length ===
-                      sortedReports.value.length
-                    }
-                    onToggle$={() =>
-                      (selectedReports.value =
-                        selectedReports.value.length ===
-                        sortedReports.value.length
-                          ? []
-                          : sortedReports.value.map((r) => r.id))
-                    }
-                  />
-                </th>
                 <th
                   scope="col"
                   class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500 dark:text-gray-400"
@@ -322,15 +301,10 @@ export default component$(() => {
             <tbody class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
               {sortedReports.value.map((report) => (
                 <tr
+                  onClick$={() => nav(`/studio/report/${report.id}`)}
                   key={report.id}
-                  class="hover:bg-gray-50 dark:hover:bg-gray-700"
+                  class="hover:bg-gray-50 dark:hover:bg-gray-700 hover:cursor-pointer"
                 >
-                  <td class="whitespace-nowrap px-6 py-4">
-                    <Checkbox
-                      checked={selectedReports.value.includes(report.id)}
-                      onToggle$={() => handleSelectReport(report.id)}
-                    />
-                  </td>
                   <td class="whitespace-nowrap px-6 py-4">
                     <div class="max-w-[200px] truncate text-sm font-medium text-gray-900 dark:text-white">
                       {report.name}
@@ -365,13 +339,6 @@ export default component$(() => {
             </tbody>
           </table>
         </div>
-        {selectedReports.value.length > 0 && (
-          <div class="mt-4 flex justify-end">
-            <Button onClick$={handleDeleteSelected} variant="destructive">
-              <Trash2 class="mr-2 h-4 w-4" /> Delete Selected
-            </Button>
-          </div>
-        )}
       </div>
     </main>
   );

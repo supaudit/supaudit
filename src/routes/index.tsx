@@ -107,7 +107,7 @@ export default component$(() => {
                   class="bg-primary text-white hover:bg-primary/90 dark:bg-primary dark:text-gray-900 dark:hover:bg-primary/90"
                   size="lg"
                 >
-                  {user ? "Go to Supaudit Studio" : "Log in to Supaudit"}
+                  {user.value ? "Go to Supaudit Studio" : "Log in to Supaudit"}
                 </Button>
               </Link>
             </div>

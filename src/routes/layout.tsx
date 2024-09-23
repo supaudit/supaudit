@@ -2,6 +2,7 @@ import { component$, Slot, useContext } from "@builder.io/qwik";
 import { DarkModeContext } from "~/context";
 import type { DocumentHead, RequestHandler } from "@builder.io/qwik-city";
 import { Link, routeAction$ } from "@builder.io/qwik-city";
+import type { Database } from "~/database.types";
 
 import {
   LuShield as Shield,
@@ -21,7 +22,7 @@ export const useLogoutUser = routeAction$(async (_, { sharedMap, redirect }) => 
 });
 
 export const onRequest: RequestHandler = async (requestEv) => {
-  const supabase = createServerClient(
+  const supabase = createServerClient<Database>(
     requestEv.env.get("PUBLIC_SUPABASE_URL")!,
     requestEv.env.get("PUBLIC_SUPABASE_ANON_KEY")!,
     requestEv,
