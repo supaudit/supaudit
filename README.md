@@ -4,6 +4,9 @@
     <img width="240px" alt="Supaudit Logo" src="https://github.com/user-attachments/assets/c6929999-c73d-4c5c-8b36-e89317f828e2" />
 </p>
 
+[![Build](https://github.com/supaudit/supaudit/actions/workflows/build.yml/badge.svg)](https://github.com/supaudit/supaudit/actions/workflows/build.yml)
+[![Supaudit License](https://img.shields.io/github/license/supaudit/supaudit)](https://github.com/supaudit/supaudit?tab=Apache-2.0-1-ov-file)
+
 Supaudit is an open-source platform that revolutionizes the way security teams perform audits and write reports. By combining the power of interactive notebooks and generative AI, Supaudit streamlines the entire security auditing process.
 
 Features
