@@ -14,6 +14,10 @@ restart:
 apply-migrations:
     supabase db reset
 
+build-app:
+    pnpm install
+    pnpm build
+
 test:
     deno test --allow-net -- --recursive
 

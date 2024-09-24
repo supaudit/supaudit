@@ -1,0 +1,14 @@
+name: "Build"
+on:
+  workflow_call:  # Allow reusing this workflow in others
+  pull_request:
+    branches: ['**']
+  push:
+    branches: ['main']
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v27
+      - run: nix develop --command just build-app
